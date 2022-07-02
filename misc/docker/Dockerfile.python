@@ -1,0 +1,33 @@
+#FROM python:latest
+FROM python:3.9-slim-bullseye
+#FROM spellrun/torch-cpu
+
+LABEL version="4.0.2" \
+      service_name="rapidxai" \
+      service_author="Zhibin Liao (AIML)"
+
+RUN pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Create a non-root user
+ENV USERNAME rapidxai
+ENV HOME /home/$USERNAME
+RUN groupadd --gid 5000 $USERNAME \
+      && useradd --home-dir $HOME --create-home --uid 5000 \
+      --gid 5000 --shell /bin/sh --skel /dev/null $USERNAME
+USER $USERNAME
+
+ENV WORKSPACE $HOME/workspace
+RUN mkdir -p $WORKSPACE
+WORKDIR $WORKSPACE
+
+COPY ../../aiml $WORKSPACE/aiml
+COPY ../../swagger_server $WORKSPACE/swagger_server
+COPY ../../requirements.txt $WORKSPACE
+
+RUN echo "|--> Install requirements" \
+      && pip3 install --no-cache-dir -r requirements.txt \
+      && echo "|--> Pip clean" \
+      && pip cache purge
+
+ENTRYPOINT ["python3.9"]
+CMD ["-m", "swagger_server"]

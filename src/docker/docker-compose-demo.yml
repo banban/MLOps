@@ -1,0 +1,63 @@
+version: "4.0.2"  # optional since v1.27.0
+#https://postman.heartai.net/#88cf8795-0793-4036-a3dc-7a738a36f6f8
+name: RAPIDx AI service
+services:
+  api:
+    build:
+      context: ../../
+      dockerfile: docker/v4.0.2/Dockerfile.ubuntu
+    expose:
+      - 8080
+    networks:
+      - rapidxai
+      - heartai
+    ports:
+      - "8080:5000"
+    image: aiml_api
+    container_name: aiml_api
+    hostname: aiml_api
+    volumes:
+      #- ./host_folder:/usr/src/app/guest_folder
+      - ../../aiml:/usr/src/app/aiml
+    environment:
+      FLASK_ENV: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/rapidx_ai/api/public/analytics/zl/health_check"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  #https://github.com/mlflow/mlflow/tree/master/examples/docker
+  #https://github.com/Toumash/mlflow-docker/blob/master/docker-compose.yml
+  mlflow:
+    restart: always
+    image: mlflow_server
+    container_name: mlflow_server
+    build:
+      context: ../../
+      dockerfile: docker/v4.0.2/Dockerfile.mlflow
+    ports:
+      - "5000:5000"
+    networks:
+      - rapidxai
+    environment:
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+    expose:
+      - 8080
+    command: mlflow server --backend-store-uri ...
+
+networks:
+  rapidxai:
+    driver: bridge
+  heartai:
+    driver: bridge
+
+volumes:
+  aiml:
+    name: host_aiml
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: <absolute path to>/Team-10/code/flask-server/aiml

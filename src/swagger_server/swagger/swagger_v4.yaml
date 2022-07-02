@@ -1,0 +1,698 @@
+---
+swagger: "2.0"
+info:
+  description: "Myocardial infarction risk predicting ML models released by Docker\
+    \ container as a web service. Additional requirements - such as 30-day death prediction\
+    \ and CABG/Intervention prediction at this point. It is believed that the requirements\
+    \ will keep growing. This project aims to adjust or create a new docker container\
+    \ every time a new ML model is built and be able to bulk process capacity if a\
+    \ user chooses to send package containing an arbitrary number of patient records."
+  version: "4.0.2"
+  title: "Containerization of machine learning"
+  termsOfService: "https://www.heartai.net/development/development-guide/index.html"
+  contact:
+    email: "zhibin.liao@adelaide.edu.au"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "rapidxai.dev.apps.aro.sah.heartai.net"
+basePath: "/rapidx_ai/api/public/analytics/zl"
+tags:
+- name: "modeling"
+  description: "Everything about ML Models"
+  externalDocs:
+    description: "Find out more aboput analytical implementation"
+    url: "https://www.heartai.net/projects/rapidx-ai/analytical-implementation-zhibin-liao/index.html"
+- name: "storage"
+  description: "Access to Model storage orders"
+- name: "inference"
+  description: "Operations about inference"
+  externalDocs:
+    description: "Find out more about HeartAI API"
+    url: "https://postman.heartai.net"
+schemes:
+- "http"
+paths:
+  /model:
+    post:
+      tags:
+      - "modeling"
+      summary: "Add a new model to the storage"
+      description: ""
+      operationId: "add_model"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Model object that needs to be added to the storage"
+        required: true
+        schema:
+          $ref: "#/definitions/Model"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+    put:
+      tags:
+      - "modeling"
+      summary: "Update an existing model"
+      description: ""
+      operationId: "update_model"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Model object that needs to be added to the storage"
+        required: true
+        schema:
+          $ref: "#/definitions/Model"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Model not found"
+        "405":
+          description: "Validation exception"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+  /model/findByVersion:
+    get:
+      tags:
+      - "modeling"
+      summary: "Finds Models by version"
+      description: "Multiple version values can be provided with comma separated strings"
+      operationId: "find_models_by_version"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "version"
+        in: "query"
+        description: "Model's version values that need to be considered for inference"
+        required: true
+        type: "number"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Model"
+        "400":
+          description: "Invalid version value"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+  /model/findByTags:
+    get:
+      tags:
+      - "modeling"
+      summary: "Finds Models by tags"
+      description: "Muliple tags can be provided with comma separated strings. Use\
+        \ tag1, tag2, tag3 for testing."
+      operationId: "find_models_by_tags"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tags"
+        in: "query"
+        description: "Tags to filter by"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      deprecated: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Model"
+        "400":
+          description: "Invalid tag value"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+  /model/{modelId}:
+    get:
+      tags:
+      - "modeling"
+      summary: "Find model by ID"
+      description: "Returns a single model"
+      operationId: "get_model_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "modelId"
+        in: "path"
+        description: "ID of model to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Model"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Model not found"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+    post:
+      tags:
+      - "modeling"
+      summary: "Updates a model in the storage with form data"
+      description: ""
+      operationId: "update_model_with_form"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "modelId"
+        in: "path"
+        description: "ID of model that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "filename"
+        in: "formData"
+        description: "Updated filename of the model"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "formData"
+        description: "Updated version of the model"
+        required: false
+        type: "string"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+    delete:
+      tags:
+      - "modeling"
+      summary: "Deletes a model"
+      description: ""
+      operationId: "delete_model"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "modelId"
+        in: "path"
+        description: "Model id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Model not found"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+  /model/{modelId}/uploadPickle:
+    post:
+      tags:
+      - "modeling"
+      summary: "uploads a pickle file"
+      description: ""
+      operationId: "upload_file"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "modelId"
+        in: "path"
+        description: "ID of model to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      security:
+      - model_auth:
+        - "write:models"
+        - "read:models"
+      responses:
+        "200":
+          description: "successful operation"
+      x-swagger-router-controller: "swagger_server.controllers.model_controller"
+  /outcomes:
+    get:
+      tags:
+      - "storage"
+      summary: "Returns model outcomes"
+      description: "There are 5 outcomes: `Normal`, `Chronic`, `Acute`, `T2MI`, `T1MI`."
+      operationId: "get_outcomes"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.storage_controller"
+  /events:
+    get:
+      tags:
+      - "storage"
+      summary: "Returns model events"
+      description: "There are 2 events in scope: event_dead, event_dmi30d."
+      operationId: "get_events"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.storage_controller"
+  /features:
+    get:
+      tags:
+      - "storage"
+      summary: "Returns model features"
+      description: "There are 3 features in scope: phys_ckmb, phys_po2, angiogram."
+      operationId: "get_features"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.storage_controller"
+  /exclusions:
+    get:
+      tags:
+      - "storage"
+      summary: "Returns model exclusions"
+      description: "There are 14 exclusions in scope: avgtrop, avgspd,maxtrop,mintrop,maxvel,minvel,divtrop,difftrop,diffvel,logtrop0,trop7,trop8,time_trop7,time_trop8."
+      operationId: "get_exclusions"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.storage_controller"
+  /health_check:
+    get:
+      tags:
+      - "inference"
+      summary: "health check"
+      description: "used by rapidx_ai endpoint zl/health_check"
+      operationId: "inference_health_check"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict:
+    post:
+      tags:
+      - "inference"
+      summary: "General endpoint to predict with given input array"
+      description: "New for rapidx_ai endpoint: zl/predict"
+      operationId: "inference_predict"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Type of prediction"
+        required: true
+        type: "string"
+        enum:
+        - "outcome"
+        - "event"
+        - "revasc"
+      - name: "category"
+        in: "query"
+        description: "Category for prediction"
+        required: true
+        type: "string"
+        enum:
+        - "dl"
+        - "xgb"
+      - name: "version"
+        in: "query"
+        description: "Model version for prediction"
+        required: false
+        type: "number"
+        default: 4
+      - name: "idx"
+        in: "query"
+        description: "prediction model id, default value -1 means use all models"
+        required: false
+        type: "number"
+        default: -1
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/cardiac_diagnosis/dl:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/dl"
+      operationId: "inference_predict_cardiac_diagnosis_dl"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/cardiac_diagnosis/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/xgb"
+      operationId: "inference_predict_cardiac_diagnosis_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/event_30day/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/event_30day/xgb"
+      operationId: "inference_predict_event_30day_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/revasc/dl:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/revasc/dl"
+      operationId: "inference_predict_revasc_dl"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/revasc/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/revasc/xgb"
+      operationId: "inference_predict_revasc_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/PatientRecord"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InferenceResult"
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+securityDefinitions:
+  model_auth:
+    type: "oauth2"
+    authorizationUrl: "http://modelstorage.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:models: "modify models in your account"
+      read:models: "read your models"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Troponin:
+    type: "object"
+    properties:
+      value:
+        type: "integer"
+        format: "int32"
+      time:
+        type: "integer"
+        format: "int64"
+        description: "as day milliseconds"
+  PatientRecord:
+    type: "object"
+    properties:
+      age:
+        type: "integer"
+        format: "int32"
+      gender:
+        type: "boolean"
+        description: "bit 0: male, 1: female"
+      angiogram:
+        type: "integer"
+        format: "int32"
+      troponine:
+        type: "array"
+        description: "array of troponine history records"
+        items:
+          $ref: "#/definitions/Troponin"
+  Category:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        example: ""
+      name:
+        type: "string"
+        example: ""
+    example:
+      code: ""
+      name: ""
+  InferenceFeature:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      value:
+        type: "string"
+    example:
+      name: "name"
+      value: "value"
+  InferenceResult:
+    type: "object"
+    properties:
+      patientId:
+        type: "integer"
+        format: "int32"
+        description: "Patients inique identifier is derived from Patient record signature"
+      modelId:
+        type: "integer"
+        format: "int32"
+        description: "Model's inique identifier"
+      features:
+        type: "array"
+        items:
+          $ref: "#/definitions/InferenceFeature"
+    example:
+      features:
+      - name: "name"
+        value: "value"
+      - name: "name"
+        value: "value"
+      patientId: 0
+      modelId: 6
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+    example:
+      name: "name"
+      id: 6
+  Model:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      filename:
+        type: "string"
+      tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tag"
+      version:
+        type: "string"
+        description: "model version in the storage"
+        enum:
+        - "2"
+        - "3"
+        - "4"
+    example:
+      filename: "file.pickle"
+      id: 1
+      category:
+        code: "dl"
+        name: "Deep Learning"
+      version: "5.0"
+      tags:
+      - name: "tag name"
+        id: 6
+externalDocs:
+  description: "Find out more about HeartAI RAPIDx services"
+  url: "https://www.heartai.net/services/rapidx-ai-service/index.html"

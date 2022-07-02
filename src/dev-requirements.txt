@@ -1,0 +1,4 @@
+connexion
+six
+torch
+torchvision

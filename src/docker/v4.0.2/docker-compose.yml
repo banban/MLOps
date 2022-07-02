@@ -1,0 +1,63 @@
+version: "3.8"  # optional since v1.27.0
+#https://postman.heartai.net/#88cf8795-0793-4036-a3dc-7a738a36f6f8
+name: RAPIDx AI service
+services:
+  api:
+    build:
+      context: ../../
+      dockerfile: docker/v4.0.2/Dockerfile
+    expose:
+      - 8080
+    networks:
+      - rapidxai
+      - heartai
+    ports:
+      - "8080:5000"
+    image: aiml_api
+    container_name: aiml_api
+    hostname: aiml_api
+    volumes:
+      # - ../../aiml:/usr/src/app/aiml
+      - aiml:/home/rapidxai/workspace/aiml
+    environment:
+      FLASK_ENV: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/rapidx_ai/api/public/analytics/zl/ping"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  mlflow:
+    restart: always
+    image: mlflow_server
+    container_name: mlflow_server
+    build:
+      context: ../../
+      dockerfile: docker/v4.0.2/Dockerfile.mlflow
+    ports:
+      - "8081:5000"
+    networks:
+      - rapidxai
+    # environment:
+    #   - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+    expose:
+      - 8081
+    #command: mlflow server --backend-store-uri sqlite:////root/mlflow.db --default-artifact-root S3: /bucket name --host remote host
+    #command: mlflow server --backend-store-uri sqlite:////root/mlflow.db --default-artifact-root file://172.18.0.3/root/mlruns -h 0.0.0.0
+    command: --backend-store-uri sqlite:////root/mlflow.db --default-artifact-root ./mlruns -h 0.0.0.0
+
+networks:
+  rapidxai:
+    driver: bridge
+  heartai:
+    driver: bridge
+
+volumes:
+  aiml:
+    name: host_aiml
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: <absolute path to>/Team-10/code/flask-server/aiml

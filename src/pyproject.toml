@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "Containerization of machine learning [CML]"
+version = "4.0.2"
+description = "Myocardial infarction risk predicting ML models released by Docker container as a web service. Additional requirements - such as 30-day death prediction and CABG/Intervention prediction at this point. It is believed that the requirements will keep growing. This project aims to adjust or create a new docker container every time a new ML model is built and be able to bulk process capacity if a user chooses to send package containing an arbitrary number of patient records."
+authors = ["Team 10"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+Flask = "^2.1.1"
+jsonify = "^0.5"
+gunicorn = "^20.1.0"
+scikit-learn = "^1.0.2"
+connexion = {extras = ["swagger-ui"], version = "^2.13.1"}
+python-dateutil = "^2.8.2"
+setuptools = "^62.1.0"
+Flask-Caching = "^1.10.1"
+numpy = ">=1.18,<1.22"
+pandas = "1.4.2"
+torch = "1.11.0"
+torchvision = "0.12.0"
+xgboost = "1.6.1"
+click = "^8.1.2"
+numba = "^0.55.1"
+colorama = "^0.4.4"
+
+[tool.poetry.dev-dependencies]
+Flask-Testing = "^0.8.1"
+coverage = "^6.3.2"
+nose = "^1.3.7"
+pluggy = "^1.0.0"
+py = "^1.11.0"
+randomize = "^0.14"
+pytest = "^7.1.2"
+great-expectations = "^0.15.7"
+pylint = "^2.14.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

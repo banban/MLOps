@@ -1,0 +1,30 @@
+#FROM petronetto/alpine-machine-learning-base
+#FROM petronetto/pytorch-alpine
+FROM alpine:3.15
+
+
+RUN apk add --no-cache bash \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-2.35-r0.apk \
+    && apk add --no-cache glibc-2.35-r0.apk \
+    && rm -rf glibc-2.35-r0.apk \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-bin-2.35-r0.apk \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.35-r0/glibc-i18n-2.35-r0.apk \
+    && apk add glibc-bin-2.35-r0.apk glibc-i18n-2.35-r0.apk \
+    && /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
+
+RUN apk add python3 curl build-base python3-dev \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.9 get-pip.py \
+    && rm -f get-pip.py \
+    && echo "|--> Pip upgrade" \
+    && pip3 install --upgrade pip \
+    && echo "|--> Clean" \
+    && pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+
+#EXPOSE 5000
+#
+#WORKDIR /notebooks
+#
+#CMD ["jupyter", "notebook", "--port=5000", "--no-browser", \
+#    "--allow-root", "--ip=0.0.0.0", "--NotebookApp.token="]

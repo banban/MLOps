@@ -1,0 +1,6 @@
+[run]
+source = .
+omit = ./tox/*,./venv/*,./docker/*,*/Misc/*,./swagger_server/models*,./swagger_server/swagger,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py
+
+[report]
+omit = ./tox/*,./venv/*,./docker/*,*/Misc/*,./swagger_server/models*,./swagger_server/swagger,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py

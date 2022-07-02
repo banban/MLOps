@@ -1,0 +1,32 @@
+@api_host = http://localhost:5000/rapidx_ai/api/public/analytics/zl
+POST {{api_host}}/predict HTTP/1.1
+content-type: application/json
+User-Agent: rest-client
+
+[
+    {
+        "age": 70,
+        "gender": 1,
+        "angiogram": 1,
+        "trop1": 30,
+        "time_trop1": 3600000,
+        "trop2": 200,
+        "time_trop2": 7200000
+    },
+    {
+        "age": 60,
+        "gender": 0,
+        "angiogram": 0,
+        "logtrop0": 4.02535169073515,
+        "troponine": [
+            {
+                "value": 1,
+                "time": 20170721
+            },
+            {
+                "value": 2,
+                "time": 20170722
+            }
+        ]
+    }
+]

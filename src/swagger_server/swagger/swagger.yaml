@@ -1,0 +1,513 @@
+---
+swagger: "2.0"
+info:
+  description: "Myocardial infarction risk predicting ML models released by Docker\
+    \ container as a web service. Additional requirements - such as 30-day death prediction\
+    \ and CABG/Intervention prediction at this point. It is believed that the requirements\
+    \ will keep growing. This project aims to adjust or create a new docker container\
+    \ every time a new ML model is built and be able to bulk process capacity if a\
+    \ user chooses to send package containing an arbitrary number of patient records."
+  version: "4.0.2"
+  title: "Containerization of machine learning"
+  termsOfService: "https://www.heartai.net/development/development-guide/index.html"
+  contact:
+    email: "zhibin.liao@adelaide.edu.au"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "rapidxai.dev.apps.aro.sah.heartai.net"
+basePath: "/rapidx_ai/api/public/analytics/zl"
+tags:
+- name: "inference"
+  description: "Operations about inference"
+  externalDocs:
+    description: "Find out more about HeartAI API"
+    url: "https://postman.heartai.net"
+schemes:
+- "http"
+paths:
+  /ping:
+    get:
+      tags:
+      - "inference"
+      summary: "check service availability"
+      description: "used by rapidx_ai endpoint zl/pingService"
+      operationId: "inference_ping"
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /pingByPost:
+    post:
+      tags:
+      - "inference"
+      summary: "check service availability"
+      description: "used by rapidx_ai endpoint zl/pingServiceByPost"
+      operationId: "inference_pingByPost"
+      consumes:
+      - "application/json"
+      - "text/plain"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: false
+        schema:
+          type: 
+          - object
+          - array
+          - string
+      responses:
+        "200":
+          description: "successful operation"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /health_check:
+    get:
+      tags:
+      - "inference"
+      summary: "health check"
+      description: "used by rapidx_ai endpoint zl/health_check"
+      operationId: "inference_health_check"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /tools/parse_variables:
+    post:
+      tags:
+      - "inference"
+      summary: "Parse and process incoming variables"
+      description: "used by rapidx_ai endpoints: zl/tools/parse_variables"
+      operationId: "inference_predict_parse_variables"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of variables"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict:
+    post:
+      tags:
+      - "inference"
+      summary: "General endpoint to predict with given input array"
+      description: "New for rapidx_ai endpoint: zl/predict"
+      operationId: "inference_predict"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Type of prediction"
+        required: false
+        type: "string"
+        enum:
+        - "outcome"
+        - "event"
+        - "revasc"
+        - "all"
+      - name: "category"
+        in: "query"
+        description: "Category for prediction"
+        required: false
+        type: "string"
+        enum:
+        - "dl"
+        - "xgb"
+      - name: "version"
+        in: "query"
+        description: "Model version for prediction"
+        required: false
+        type: "number"
+        default: 4
+      - name: "idx"
+        in: "query"
+        description: "prediction model id, default value -1 means use all models"
+        required: false
+        type: "number"
+        default: -1
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/cardiac_diagnosis/dl:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/dl"
+      operationId: "inference_predict_cardiac_diagnosis_dl"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/cardiac_diagnosis/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/xgb"
+      operationId: "inference_predict_cardiac_diagnosis_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/outcome/dl:  
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by AIML endpoints: zl/predict/outcome/dl, where outcome is synonym for cardiac_diagnosis"
+      operationId: "inference_predict_outcome_dl"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/outcome/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by AIML endpoints: zl/predict/outcome/xgb, where outcome is synonym for cardiac_diagnosis"
+      operationId: "inference_predict_outcome_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/event/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/event/xgb, where event is synonym for event_30day"
+      operationId: "inference_predict_event_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/event_30day/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/event_30day/xgb"
+      operationId: "inference_predict_event_30day_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/revasc/dl:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/revasc/dl"
+      operationId: "inference_predict_revasc_dl"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+  /predict/revasc/xgb:
+    post:
+      tags:
+      - "inference"
+      summary: "Predict list of inferences with given input array"
+      description: "used by rapidx_ai endpoints: zl/predict/cardiac_diagnosis/revasc/xgb"
+      operationId: "inference_predict_revasc_xgb"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of patient records"
+        required: true
+        schema:
+          type: 
+          - object
+          - array
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: 
+            - object
+            - array
+        "400":
+          description: "Invalid payload"
+      x-swagger-router-controller: "swagger_server.controllers.inference_controller"
+
+definitions:
+  Troponin:
+    type: "object"
+    properties:
+      value:
+        type: "integer"
+        format: "int32"
+      time:
+        type: "integer"
+        format: "int64"
+        description: "as day milliseconds"
+  PatientRecord:
+    type: "object"
+    properties:
+      age:
+        type: "integer"
+        format: "int32"
+      gender:
+        type: "boolean"
+        description: "bit 0: male, 1: female"
+      angiogram:
+        type: "integer"
+        format: "int32"
+      troponine:
+        type: "array"
+        description: "array of troponine history records"
+        items:
+          $ref: "#/definitions/Troponin"
+  Category:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        example: ""
+      name:
+        type: "string"
+        example: ""
+    example:
+      code: ""
+      name: ""
+  InferenceFeature:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      value:
+        type: "string"
+    example:
+      name: "name"
+      value: "value"
+  InferenceResult:
+    type: "object"
+    properties:
+      patientId:
+        type: "integer"
+        format: "int32"
+        description: "Patients inique identifier is derived from Patient record signature"
+      modelId:
+        type: "integer"
+        format: "int32"
+        description: "Model's inique identifier"
+      features:
+        type: "array"
+        items:
+          $ref: "#/definitions/InferenceFeature"
+    example:
+      features:
+      - name: "name"
+        value: "value"
+      - name: "name"
+        value: "value"
+      patientId: 0
+      modelId: 6
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+    example:
+      name: "name"
+      id: 6
+  Model:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      filename:
+        type: "string"
+      tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tag"
+      version:
+        type: "string"
+        description: "model version in the storage"
+        enum:
+        - "2"
+        - "3"
+        - "4"
+    example:
+      filename: "file.pickle"
+      id: 1
+      category:
+        code: "dl"
+        name: "Deep Learning"
+      version: "5.0"
+      tags:
+      - name: "tag name"
+        id: 6
+        
+externalDocs:
+  description: "Find out more about HeartAI RAPIDx services"
+  url: "https://www.heartai.net/services/rapidx-ai-service/index.html"

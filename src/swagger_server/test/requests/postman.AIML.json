@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "5731ee63-3751-44c9-88ee-376822675ac0",
+		"name": "AIML",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "4.0.1",
+			"item": [
+				{
+					"name": "predict/outcome/dl",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 70,\r\n    \"gender\": 1,\r\n    \"angiogram\": 1,\r\n    \"trop1\": 30,\r\n    \"time_trop1\": 3600000,\r\n    \"trop2\": 200,\r\n    \"time_trop2\": 7200000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict/outcome/dl",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict",
+								"outcome",
+								"dl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict/outcome/xgb",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 70,\r\n    \"gender\": 1,\r\n    \"angiogram\": 1,\r\n    \"trop1\": 30,\r\n    \"time_trop1\": 3600000,\r\n    \"trop2\": 200,\r\n    \"time_trop2\": 7200000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict/outcome/xgb",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict",
+								"outcome",
+								"xgb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict/revasc/dl",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict/revasc/dl",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict",
+								"revasc",
+								"dl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict/event/xgb",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"trop0\": 10,\r\n    \"time_trop0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict/event/xgb",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict",
+								"event",
+								"xgb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4.0.2",
+			"item": [
+				{
+					"name": "sawagger",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/swagger.yaml",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"swagger.yaml"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health_check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/health_check",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"health_check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tools/parse variables",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"test\": \"GET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/rapidx_ai/api/public/analytics/zl",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rapidx_ai",
+								"api",
+								"public",
+								"analytics",
+								"zl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "storage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/zl/exclusions",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"zl",
+								"exclusions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict v3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict?type=outcome&category=dl&version=3&idx=-1",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "outcome"
+								},
+								{
+									"key": "category",
+									"value": "dl"
+								},
+								{
+									"key": "version",
+									"value": "3"
+								},
+								{
+									"key": "idx",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict v4",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 1,\r\n        \"time\": 20170721\r\n      },\r\n      {\r\n        \"value\": 2,\r\n        \"time\": 20170722\r\n      }\r\n    ]\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/rapidx_ai/api/public/analytics/zl/predict?type=revasc&category=dl&version=4&idx=-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rapidx_ai",
+								"api",
+								"public",
+								"analytics",
+								"zl",
+								"predict"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "revasc"
+								},
+								{
+									"key": "category",
+									"value": "dl"
+								},
+								{
+									"key": "version",
+									"value": "4"
+								},
+								{
+									"key": "idx",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict single",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"dummy_feature\": 0,\r\n\"age\": 70,\r\n\"gender\": false,\r\n\"angiogram\": 0,\r\n\"logtrop0\": 3.2188758248682,\r\n\"trop0\": 10,\r\n\"time_trop0\": 8640000,\r\n\"trop1\": 20,\r\n\"time_trop1\": 17280000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict?type=revasc&category=xgb&version=4&idx=-1",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "revasc"
+								},
+								{
+									"key": "category",
+									"value": "xgb"
+								},
+								{
+									"key": "version",
+									"value": "4"
+								},
+								{
+									"key": "idx",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issue #14",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"trop0\": 10,\r\n    \"trop_time0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict/revasc/dl",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict",
+								"revasc",
+								"dl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issue #14/all",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Unnamed: 0\": 0,\r\n\t\"cohort_id\": 0.0,\r\n\t\"ds\": 0.0,\r\n\t\"supercell_id\": 0.0,\r\n\t\"subjectid\": 0.0,\r\n\t\"trop0\": 56,\r\n\t\"trop1\": 59,\r\n\t\"trop2\": 54.0,\r\n\t\"trop3\": 0.0,\r\n\t\"trop4\": 0.0,\r\n\t\"trop5\": 0.0,\r\n\t\"trop6\": 0.0,\r\n\t\"time_trop0\": 0.050347224,\r\n\t\"time_trop1\": 0.31770834,\r\n\t\"time_trop2\": 0.5392361,\r\n\t\"time_trop3\": 0.0,\r\n\t\"time_trop4\": 0.0,\r\n\t\"time_trop5\": 0.0,\r\n\t\"time_trop6\": 0.0,\r\n\t\"avgtrop\": 4.03062439373505,\r\n\t\"avgspd\": 0.297463887000842,\r\n\t\"maxtrop\": 4.07753744390572,\r\n\t\"mintrop\": 3.98898404656427,\r\n\t\"maxvel\": 0.195188268029858,\r\n\t\"minvel\": -0.399739505971826,\r\n\t\"divtrop\": 1.02219948646265,\r\n\t\"difftrop\": 0.088553397341445,\r\n\t\"diffvel\": 0.594927774001684,\r\n\t\"logtrop0\": 4.02535169073515,\r\n\t\"phys_albumin\": 36,\r\n\t\"phys_bnp\": 0.0,\r\n\t\"phys_ckmb\": 0.0,\r\n\t\"phys_creat\": 4.69134788222914,\r\n\t\"phys_crp\": 0.0,\r\n\t\"phys_dimer\": 0.0,\r\n\t\"phys_ferritin\": 3.49650756146648,\r\n\t\"phys_fibrin\": 0.0,\r\n\t\"phys_haeglob\": 120,\r\n\t\"phys_hba1c\": 1.82454926128736,\r\n\t\"phys_lacta\": 0.0,\r\n\t\"phys_lactv\": 0.0,\r\n\t\"phys_pco2\": 0.0,\r\n\t\"phys_ph\": 0.0,\r\n\t\"phys_platec\": 5.61312810638807,\r\n\t\"phys_platev\": 0.0,\r\n\t\"phys_po2\": 0.0,\r\n\t\"phys_tsh\": 0.693147180559945,\r\n\t\"phys_urate\": 0.0,\r\n\t\"phys_urea\": 2.04122030408888,\r\n\t\"phys_wbc\": 1.90954250488444,\r\n\t\"priorami\": 0,\r\n\t\"prioracs\": 1,\r\n\t\"priorangina\": 1,\r\n\t\"priorvt\": 0,\r\n\t\"priorcva\": 0,\r\n\t\"priorrenal\": 0,\r\n\t\"priorsmoke\": 0,\r\n\t\"priorcopd\": 0,\r\n\t\"priorpci\": 0,\r\n\t\"priorcabg\": 0,\r\n\t\"priordiab\": 0,\r\n\t\"priorhtn\": 0,\r\n\t\"priorhf\": 0,\r\n\t\"priorarrhythmia\": 0,\r\n\t\"priorhyperlipid\": 0,\r\n\t\"gender\": 1,\r\n\t\"age\": 90.44948,\r\n\t\"angiogram\": 0,\r\n\t\"mdrd_gfr\": 52.891663,\r\n\t\"out5\": \"Chronic\",\r\n\t\"out3c\": 0,\r\n\t\"outl1\": 0,\r\n\t\"outl2\": 0,\r\n\t\"event_mi\": 0,\r\n\t\"event_t1mi\": 0,\r\n\t\"event_t2mi\": 0,\r\n\t\"event_t4mi\": 0,\r\n\t\"event_t5mi\": 0,\r\n\t\"event_dead\": \"Dead\",\r\n\t\"event_dmi30d\": 1,\r\n\t\"quantized_trop_0-2\": 56.0,\r\n\t\"quantized_trop_2-4\": 0.0,\r\n\t\"quantized_trop_4-6\": 0.0,\r\n\t\"quantized_trop_6-8\": 59.0,\r\n\t\"quantized_trop_8-10\": 0.0,\r\n\t\"quantized_trop_10-12\": 0.0,\r\n\t\"quantized_trop_12-14\": 54.0,\r\n\t\"quantized_trop_14-16\": 0.0,\r\n\t\"quantized_trop_16-18\": 0.0,\r\n\t\"quantized_trop_18-20\": 0.0,\r\n\t\"quantized_trop_20-22\": 0.0,\r\n\t\"quantized_trop_22-24\": 0.0,\r\n\t\"time_trop7\": -0.041666666666667,\r\n\t\"trop8\": 3,\r\n\t\"time_trop8\": 7,\r\n\t\"trop7\": 19.0,\r\n\t\"set\": \"train\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/predict",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"predict"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

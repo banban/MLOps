@@ -1,0 +1,170 @@
+---
+features:
+- version: 3
+  labels:
+  - avgtrop
+  - avgspd
+  - maxtrop
+  - mintrop
+  - maxvel
+  - minvel
+  - divtrop
+  - difftrop
+  - diffvel
+  - logtrop1
+  - phys_albumin
+  - phys_bnp
+  - phys_ckmb
+  - phys_creat
+  - phys_crp
+  - phys_dimer
+  - phys_ferritin
+  - phys_fibrin
+  - phys_haeglob
+  - phys_hba1c
+  - phys_lacta
+  - phys_lactv
+  - phys_pco2
+  - phys_ph
+  - phys_platec
+  - phys_platev
+  - phys_po2
+  - phys_tsh
+  - phys_urate
+  - phys_urea
+  - phys_wbc
+  - priorami
+  - prioracs
+  - priorangina
+  - priorvt
+  - priorcva
+  - priorrenal
+  - priorsmoke
+  - priorcopd
+  - priorpci
+  - priorcabg
+  - priordiab
+  - priorhtn
+  - priorhf
+  - priorarrhythmia
+  - priorhyperlipid
+  - gender
+  - age
+  - angiogram
+  - mdrd_gfr
+- version: 4
+  labels:
+  - logtrop0
+  - avgtrop
+  - avgspd
+  - maxtrop
+  - mintrop
+  - maxvel
+  - minvel
+  - divtrop
+  - difftrop
+  - diffvel
+  - logtrop1
+  - phys_albumin
+  - phys_bnp
+  - phys_creat
+  - phys_crp
+  - phys_dimer
+  - phys_ferritin
+  - phys_fibrin
+  - phys_haeglob
+  - phys_hba1c
+  - phys_lacta
+  - phys_lactv
+  - phys_pco2
+  - phys_ph
+  - phys_platec
+  - phys_platev
+  - phys_tsh
+  - phys_urate
+  - phys_urea
+  - phys_wbc
+  - priorami
+  - prioracs
+  - priorangina
+  - priorvt
+  - priorcva
+  - priorrenal
+  - priorsmoke
+  - priorcopd
+  - priorpci
+  - priorcabg
+  - priordiab
+  - priorhtn
+  - priorhf
+  - priorarrhythmia
+  - priorhyperlipid
+  - gender
+  - age
+  - mdrd_gfr
+  - out5
+  - event_mi
+  - event_t1mi
+  - event_t2mi
+  - event_t4mi
+  - event_t5mi
+  - event_dead
+  - event_dmi30d
+  - cabg
+  - intervention
+models:
+- id: 1
+  category: dl
+  filename: aiml/models/v3/models.pickle
+  version: 3
+- id: 2
+  category: xgb
+  filename: aiml/models/v3/models_xgb.pickle
+  version: 3
+- id: 3
+  category: dmi30d
+  filename: aiml/models/v3/models_event_dmi30d.pickle
+  version: 3
+- id: 4
+  category: dl
+  filename: aiml/models/v4/revasc_models.pickle
+  version: 4
+  thresholds:
+  - type: cabg
+    def: 0.5
+    roc: 0.363
+    pr: 0.934
+  - type: intv
+    def: 0.5
+    roc: 0.607
+    pr: 0.962
+  - type: "(cabg|intv)"
+    def: 0.5
+    roc: 0.345
+    pr: 0.742
+- id: 5
+  category: xgb
+  filename: aiml/models/v4/revasc_models_both_xgb.pickle
+  version: 4
+  thresholds:
+  - type: cabg
+    def: 0.5
+    roc: 0.003
+    pr: 0.246
+  - type: intv
+    def: 0.5
+    roc: 0.024
+    pr: 0.324
+  - type: "(cabg|intv)"
+    def: 0.5
+    roc: 0.013
+    pr: 0.144
+  training_info:
+    event_dmi30d:
+      auc: 0.849
+      tpr: 0.921
+      fpr: 0.565
+    event_dead:
+      auc: 0.922
+      tpr: 0.981
+      fpr: 0.675

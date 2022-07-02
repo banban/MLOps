@@ -1,0 +1,262 @@
+{
+    "outcomes": [
+        "Normal",
+        "Chronic",
+        "Acute",
+        "T2MI",
+        "T1MI"
+    ],
+    "risk_factors": [
+        "smoking",
+        "gender",
+        "age",
+        "hst_priormi",
+        "hst_dm",
+        "hst_htn",
+        "hst_std",
+        "ischaemia_ecg",
+        "cad",
+        "dyslipid",
+        "fhx",
+        "hst_familyhx",
+        "hr",
+        "sbp",
+        "dbp",
+        "mdrd_gfr",
+        "onset",
+        "hst_onsetrest",
+        "hst_angio",
+        "angiogram"
+    ],
+    "outcomes_matrix": [
+        {
+            "index_4DMI": "Normal Troponin",
+            "out3": "Normal",
+            "out4": "Ok",
+            "out5": "Normal"
+        },
+        {
+            "index_4DMI": "Non Cardiac",
+            "out3": "Normal",
+            "out4": "Ok",
+            "out5": "Normal"
+        },
+        {
+            "index_4DMI": "Chest Pain",
+            "out3": "Normal",
+            "out4": "Ok",
+            "out5": "Normal"
+        },
+        {
+            "index_4DMI": "Other Cardiac",
+            "out3": "Normal",
+            "out4": "Ok",
+            "out5": "Normal"
+        },
+        {
+            "index_4DMI": "Chronic Injury",
+            "out3": "Chronic",
+            "out4": "Ok",
+            "out5": "Chronic"
+        },
+        {
+            "index_4DMI": "Acute Injury",
+            "out3": "Acute",
+            "out4": "Acute",
+            "out5": "Acute"
+        },
+        {
+            "index_4DMI": "T1MI",
+            "out3": "Acute",
+            "out4": "T1MI",
+            "out5": "T1MI"
+        },
+        {
+            "index_4DMI": "T2MI",
+            "out3": "Acute",
+            "out4": "T2MI",
+            "out5": "T2MI"
+        },
+        {
+            "index_4DMI": "T2MIb - Cardiac",
+            "out3": "None",
+            "out4": "None",
+            "out5": "None"
+        },
+        {
+            "index_4DMI": "T2MIa - Non-Cardiac",
+            "out3": "None",
+            "out4": "None",
+            "out5": "None"
+        },
+        {
+            "index_4DMI": "T3MI",
+            "out3": "None",
+            "out4": "None",
+            "out5": "None"
+        },
+        {
+            "index_4DMI": "T4MI",
+            "out3": "None",
+            "out4": "None",
+            "out5": "None"
+        },
+        {
+            "index_4DMI": "T5MI",
+            "out3": "None",
+            "out4": "None",
+            "out5": "None"
+        }
+    ],
+    "exclusions": [
+        "avgtrop",
+        "avgspd",
+        "maxtrop",
+        "mintrop",
+        "maxvel",
+        "minvel",
+        "divtrop",
+        "difftrop",
+        "diffvel",
+        "logtrop0",
+        "trop7",
+        "trop8",
+        "time_trop7",
+        "time_trop8"
+    ],
+    "events": [
+        "event_dead",
+        "event_dmi30d"
+    ],
+
+    "features": [
+        {
+            "version": 4,
+            "labels": ["logtrop0","avgtrop","avgspd","maxtrop",
+                "mintrop",
+                "maxvel",
+                "minvel",
+                "divtrop",
+                "difftrop",
+                "diffvel",
+                "logtrop1",
+                "phys_albumin",
+                "phys_bnp",
+                "phys_creat",
+                "phys_crp",
+                "phys_dimer",
+                "phys_ferritin",
+                "phys_fibrin",
+                "phys_haeglob",
+                "phys_hba1c",
+                "phys_lacta",
+                "phys_lactv",
+                "phys_pco2",
+                "phys_ph",
+                "phys_platec",
+                "phys_platev",
+                "phys_tsh",
+                "phys_urate",
+                "phys_urea",
+                "phys_wbc",
+                "priorami",
+                "prioracs",
+                "priorangina",
+                "priorvt",
+                "priorcva",
+                "priorrenal",
+                "priorsmoke",
+                "priorcopd",
+                "priorpci",
+                "priorcabg",
+                "priordiab",
+                "priorhtn",
+                "priorhf",
+                "priorarrhythmia",
+                "priorhyperlipid",
+                "gender",
+                "age",
+                "mdrd_gfr",
+        
+                "out5",
+                "event_mi",
+                "event_t1mi",
+                "event_t2mi",
+                "event_t4mi",
+                "event_t5mi",
+                "event_dead",
+                "event_dmi30d",
+                "cabg",
+                "intervention"
+        
+            ]
+        }
+    ],
+
+    "models": [
+        {
+            "id": 1,
+            "category": "dl",
+            "filename": "aiml/models/v4/revasc_models.pickle",
+            "version": 4,
+            "thresholds": [
+                {
+                    "type": "cabg",
+                    "def": 0.5,
+                    "roc": 0.363,
+                    "pr": 0.934
+                },
+                {
+                    "type": "intv",
+                    "def": 0.5,
+                    "roc": 0.607,
+                    "pr": 0.962
+                },
+                {
+                    "type": "(cabg|intv)",
+                    "def": 0.5,
+                    "roc": 0.345,
+                    "pr": 0.742
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "category": "xgb",
+            "filename": "aiml/models/v4/revasc_models_both_xgb.pickle",
+            "version": 4,
+            "thresholds": [
+                {
+                    "type": "cabg",
+                    "def": 0.5,
+                    "roc": 0.003,
+                    "pr": 0.246
+                },
+                {
+                    "type": "intv",
+                    "def": 0.5,
+                    "roc": 0.024,
+                    "pr": 0.324
+                },
+                {
+                    "type": "(cabg|intv)",
+                    "def": 0.5,
+                    "roc": 0.013,
+                    "pr": 0.144
+                }
+            ],
+            "training_info": {
+                "event_dmi30d": {
+                    "auc": 0.849,
+                    "tpr": 0.921,
+                    "fpr": 0.565
+                },
+                "event_dead": {
+                    "auc": 0.922,
+                    "tpr": 0.981,
+                    "fpr": 0.675
+                }
+            }
+        }
+    ]
+}

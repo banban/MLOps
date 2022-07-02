@@ -1,0 +1,4 @@
+@api_host = http://localhost:5000/rapidx_ai/api/public/analytics/zl
+GET {{api_host}}/health_check HTTP/1.1
+content-type: application/json
+User-Agent: rest-client

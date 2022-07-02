@@ -1,0 +1,61 @@
+FROM python:3.9-alpine
+
+LABEL version="4.0.2" \
+      service_name="rapidxai" \
+      service_author="Zhibin Liao (AIML)"
+
+# Install python/pip
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 \
+    && ln -sf python3 /usr/bin/python \
+    && apk add --no-cache python3 py3-pip \
+    && python3 -m ensurepip \
+    && pip3 install --no-cache --upgrade pip setuptools \
+    # Install additional compilers
+    && apk update && apk add bash make automake python3-dev gcc g++ libc-dev \
+    # install openblas
+    && apk add --no-cache --update-cache gfortran build-base wget libpng-dev openblas-dev \
+    && apk add --no-cache py3-scipy \
+    && pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+
+#ERROR: Could not find a version that satisfies the requirement torch==1.11.0 (from versions: none)
+#ERROR: No matching distribution found for torch==1.11.0
+#https://pytorch.org/get-started/locally/
+#RUN pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+
+#19 5995.3       INFO:XGBoost build_ext:Run CMake command: ['cmake', 'xgboost', '-GUnix Makefiles', '-DUSE_OPENMP=1', '-DUSE_CUDA=0', '-DUSE_NCCL=0', '-DBUILD_WITH_SHARED_NCCL=0', '-DHIDE_CXX_SYMBOLS=1', '-DUSE_HDFS=0', '-DUSE_AZURE=0', '-DUSE_S3=0', '-DPLUGIN_LZ4=0', '-DPLUGIN_DENSE_PARSER=0', '-DUSE_SYSTEM_LIBXGBOOST=0']
+#19 5995.3       error: [Errno 2] No such file or directory: 'cmake'
+#19 6004.5   × Running setup.py install for llvmlite did not run successfully.
+#19 6004.5   │ exit code: 1
+#19 6004.5 × Encountered error while trying to install package.
+#19 6004.5 ╰─> llvmlite
+
+RUN mkdir -p /usr/src/app
+ENV WORKSPACE /usr/src/app
+WORKDIR $WORKSPACE
+
+COPY ../../aiml $WORKSPACE/aiml
+COPY ../../swagger_server $WORKSPACE/swagger_server
+#COPY dev-requirements.txt $WORKDIR/
+COPY ../../requirements_alpine.txt $WORKSPACE/
+#RUN pip3 install -r $WORKSPACE/dev-requirements.txt
+#RUN pip3 install -r $WORKSPACE/requirements.txt
+#echo "|-->Copy pyTorch" \
+#COPY ../../alpine_torch_compile/pytorch $WORKSPACE 
+#echo "|-->Copy Vision" \
+#COPY ../../alpine_torch_compile/vision $WORKSPACE/pytorch
+RUN echo "|--> Install git cmake" \
+    #&& apk update && apk upgrade \
+    && apk add git cmake \
+    && git clone --recursive https://github.com/pytorch/pytorch \
+    && echo "|--> Install PyTorch" \
+    && cd pytorch && python setup.py install \
+    && git clone --recursive https://github.com/pytorch/vision \
+    && echo "|--> Install Torch Vision" \
+    && cd vision && python setup.py install
+RUN pip3 install --no-cache-dir -r requirements_alpine.txt
+
+#EXPOSE 8080
+
+ENTRYPOINT ["python3"]
+CMD ["-m", "swagger_server"]

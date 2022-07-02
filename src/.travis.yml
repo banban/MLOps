@@ -1,0 +1,14 @@
+# ref: https://docs.travis-ci.com/user/languages/python
+language: python
+python:
+  - "3.8"
+  - "3.9"
+  - "3.9-dev"  # 3.9 development branch
+  - "nightly" # points to the latest development branch e.g. 3.6-dev
+# command to install dependencies
+# Please note that the --user option is mandatory if you are not using language: python, since no virtualenv will be created in that case.
+before_install:
+  - python -m pip install --upgrade pip
+install: "pip install --user -r requirements.txt"
+# command to run tests
+script: pytest

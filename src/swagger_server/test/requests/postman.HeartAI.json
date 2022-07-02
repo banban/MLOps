@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "d61c0100-f568-4c49-ae4e-f1d1dc11168c",
+		"name": "Heart AI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pingService",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_host}}/ping",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": " pingServiceByPOST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"label1\": \"value1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/pingByPost",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"pingByPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health_check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_host}}/health_check",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"health_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict all",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 70,\r\n    \"gender\": 1,\r\n    \"angiogram\": 1,\r\n    \"trop1\": 30,\r\n    \"time_trop1\": 3600000,\r\n    \"trop2\": 200,\r\n    \"time_trop2\": 7200000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict all single",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n        {\r\n            \"value\": 1,\r\n            \"time\": 20170721\r\n        },\r\n        {\r\n            \"value\": 2,\r\n            \"time\": 20170722\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict?type=all",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "all"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tools/parse_variables",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"trop0\": 10,\r\n    \"time_trop0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"trop0\": 10,\r\n    \"time_trop0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/tools/parse_variables",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"tools",
+						"parse_variables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/revasc/dl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"trop0\": 10,\r\n    \"trop_time0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"trop0\": 10,\r\n    \"trop_time0\": 8640000,\r\n    \"trop1\": 20,\r\n    \"time_trop1\": 17280000\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/revasc/dl",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"revasc",
+						"dl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/revasc/xgb",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/revasc/xgb",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"revasc",
+						"xgb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/cardiac_diagnosis/xgb",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/cardiac_diagnosis/xgb",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"cardiac_diagnosis",
+						"xgb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/cardiac_diagnosis/dl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/cardiac_diagnosis/dl",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"cardiac_diagnosis",
+						"dl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/event_30day/xgb",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"age\": 60,\r\n    \"gender\": true,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 4.02535169073515,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"dummy_feature\": 0,\r\n    \"age\": 70,\r\n    \"gender\": false,\r\n    \"angiogram\": 0,\r\n    \"logtrop0\": 3.2188758248682,\r\n    \"troponine\": [\r\n      {\r\n        \"value\": 10,\r\n        \"time\": 8640000\r\n      },\r\n      {\r\n        \"value\": 20,\r\n        \"time\": 17280000\r\n      }\r\n    ]\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/event_30day/xgb",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"event_30day",
+						"xgb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "predict/revasc/dl single",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"age\": 70,\r\n\"gender\": false,\r\n\"angiogram\": 0,\r\n\"logtrop0\": 3.2188758248682,\r\n\"trop0\": 10,\r\n\"time_trop0\": 8640000,\r\n\"trop1\": 20,\r\n\"time_trop1\": 17280000\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_host}}/predict/revasc/dl",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"predict",
+						"revasc",
+						"dl"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

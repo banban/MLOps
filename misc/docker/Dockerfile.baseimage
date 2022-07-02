@@ -1,0 +1,39 @@
+FROM phusion/baseimage:focal-1.2.0
+
+LABEL version="4.0.2" \
+      service_name="rapidxai" \
+      service_author="Zhibin Liao (AIML)"
+
+RUN apt-get update \
+    && apt-get install python3.9-full -y \
+    #&& curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    #&& python3.9 get-pip.py \
+    && apt-get install python3-pip -y \
+    && pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir -r requirements.txt \
+    && apt-get autoremove curl \ 
+    #Clean up APT when done.
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV WORKSPACE /usr/src/app
+RUN mkdir -p $WORKSPACE
+WORKDIR $WORKSPACE
+
+#COPY ../../aiml $WORKSPACE/aiml
+COPY ../../swagger_server $WORKSPACE/swagger_server
+COPY ../../requirements.txt $WORKSPACE
+
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]
+# put your own build instructions here
+ENV USERNAME rapidxai
+RUN mkdir -p /etc/service/$USERNAME
+ADD docker/v4.0.2/baseimage_swagger_server_run.sh /etc/service/$USERNAME/run
+RUN chmod +x /etc/service/$USERNAME/run
+
+# Create a non-root user
+ENV HOME /home/$USERNAME
+RUN groupadd --gid 5000 $USERNAME \
+  && useradd --home-dir $HOME --create-home --uid 5000 \
+  --gid 5000 --shell /bin/sh --skel /dev/null $USERNAME
+#USER $USERNAME

@@ -1,0 +1,42 @@
+{
+    "features": [
+        {
+            "version": 3,
+            "labels": ["avgtrop", "avgspd", "maxtrop", "mintrop",
+                "maxvel", "minvel", "divtrop", "difftrop",
+                "diffvel", "logtrop1",
+                "phys_albumin", "phys_bnp", "phys_ckmb", "phys_creat",
+                "phys_crp", "phys_dimer", "phys_ferritin", "phys_fibrin",
+                "phys_haeglob", "phys_hba1c", "phys_lacta", "phys_lactv",
+                "phys_pco2", "phys_ph", "phys_platec", "phys_platev",
+                "phys_po2", "phys_tsh", "phys_urate", "phys_urea",
+                "phys_wbc", "priorami", "prioracs", "priorangina",
+                "priorvt", "priorcva", "priorrenal", "priorsmoke",
+                "priorcopd", "priorpci", "priorcabg", "priordiab",
+                "priorhtn", "priorhf", "priorarrhythmia", "priorhyperlipid",
+                "gender", "age", "angiogram", "mdrd_gfr"
+            ]
+        }
+    ],
+    "models": [
+        {
+            "id": 1,
+            "category": "dl",
+            "filename": "aiml/models/v3/models.pickle",
+            "version": 3
+        },
+        {
+            "id": 2,
+            "category": "xgb",
+            "filename": "aiml/models/v3/models_xgb.pickle",
+            "version": 3
+        },
+        {
+            "id": 3,
+            "category": "dmi30d",
+            "filename": "aiml/models/v3/models_event_dmi30d.pickle",
+            "version": 3,
+            "labels": 
+        }
+    ]
+}
