@@ -200,6 +200,7 @@ python -m test > ./test_python.log
 
 # Documentation
 Project specification can be found in SPEC.md file explaining domain area of knowledge.
+![Project_Roadmap](https://user-images.githubusercontent.com/1355683/176985493-5235b5b0-d30c-421e-9261-5d5da26315c4.png)
 
 # What is new
 
